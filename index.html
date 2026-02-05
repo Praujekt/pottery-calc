@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Pottery Shrinkage Calculator</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlBvdHRlcnkgU2hyaW5rYWdlIENhbGN1bGF0b3IiLAogICJzaG9ydF9uYW1lIjogIlBvdHRlcnkgQ2FsYyIsCiAgImRlc2NyaXB0aW9uIjogIkNhbGN1bGF0ZSBwcmUtZmlyZSBkaW1lbnNpb25zIGZvciBwb3R0ZXJ5IiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmNWY1ZjUiLAogICJ0aGVtZV9jb2xvciI6ICIjOEI0NTEzIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJyUzRSUzQ3JlY3Qgd2lkdGg9JzEwMCcgaGVpZ2h0PScxMDAnIGZpbGw9JyU4Qjc2NjEnLyUzRSUzQ3RleHQgeD0nNTAnIHk9JzU1JyBmb250LXNpemU9JzUwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPSd3aGl0ZSclM0UlRjAlOUYlOEYlQkElM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #8B7355 0%, #D2B48C 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #8B4513;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .helper-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+            font-style: italic;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 18px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #8B4513;
+        }
+        
+        button {
+            width: 100%;
+            padding: 18px;
+            background: #8B4513;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:active {
+            background: #6B3410;
+        }
+        
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-title {
+            color: #8B4513;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .result-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .result-detail {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .emoji {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🏺</div>
+        <h1>Pottery Shrinkage Calculator</h1>
+        <p class="subtitle">Calculate pre-fire dimensions</p>
+        
+        <div class="input-group">
+            <label for="shrinkage">Shrinkage Rate (%)</label>
+            <input type="number" id="shrinkage" value="12.5" step="0.1" min="0" max="30">
+        </div>
+        
+        <div class="input-group">
+            <label for="target">Target Final Size (inches)</label>
+            <input type="number" id="target" placeholder="Enter desired size" step="0.01" min="0">
+            <div class="helper-text">Any linear dimension: diameter, height, width, etc.</div>
+        </div>
+        
+        <button onclick="calculate()">Calculate</button>
+        
+        <div class="result" id="result">
+            <div class="result-title">Make it this size:</div>
+            <div class="result-value" id="resultValue">—</div>
+            <div class="result-detail" id="resultDetail"></div>
+        </div>
+        
+
+    </div>
+
+    <script>
+        function calculate() {
+            const shrinkage = parseFloat(document.getElementById('shrinkage').value);
+            const target = parseFloat(document.getElementById('target').value);
+            
+            if (isNaN(shrinkage) || isNaN(target) || target <= 0) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            if (shrinkage < 0 || shrinkage > 30) {
+                alert('Shrinkage rate should be between 0% and 30%');
+                return;
+            }
+            
+            const shrinkageRate = shrinkage / 100;
+            const preFireSize = target / (1 - shrinkageRate);
+            const difference = preFireSize - target;
+            const preFireSizeCm = preFireSize * 2.54;
+            const differenceCm = difference * 2.54;
+            const targetCm = target * 2.54;
+            
+            document.getElementById('resultValue').textContent = 
+                `${preFireSize.toFixed(2)} in (${preFireSizeCm.toFixed(2)} cm)`;
+            
+            document.getElementById('resultDetail').innerHTML = 
+                `Starting at <strong>${preFireSize.toFixed(2)} inches</strong>, ` +
+                `your piece will shrink by <strong>${difference.toFixed(2)} inches</strong> ` +
+                `(${shrinkage}%) to reach your target of <strong>${target} inches</strong>.`;
+            
+            document.getElementById('result').classList.add('show');
+        }
+        
+        // Allow Enter key to calculate
+        document.getElementById('target').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculate();
+            }
+        });
+        
+        document.getElementById('shrinkage').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('target').focus();
+            }
+        });
+        
+        // Register service worker for offline functionality
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZnVuY3Rpb24oZSkgewogIGUud2FpdFVudGlsKAogICAgY2FjaGVzLm9wZW4oJ3BvdHRlcnktY2FsYycpLnRoZW4oZnVuY3Rpb24oY2FjaGUpIHsKICAgICAgcmV0dXJuIGNhY2hlLmFkZEFsbChbJy8nXSk7CiAgICB9KQogICk7Cn0pOwoKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGZ1bmN0aW9uKGUpIHsKICBlLnJlc3BvbmRXaXRoKAogICAgY2FjaGVzLm1hdGNoKGUucmVxdWVzdCkudGhlbihmdW5jdGlvbihyZXNwb25zZSkgewogICAgICByZXR1cm4gcmVzcG9uc2UgfHwgZmV0Y2goZS5yZXF1ZXN0KTsKICAgIH0pCiAgKTsKfSk7');
+        }
+    </script>
+</body>
+</html>
